@@ -11,8 +11,8 @@ class HorseOddsScraper:
         self.base_url = "https://www.oddschecker.com"
         self.odds_data = {}
     
-    def get_html_content(self, url, max_retries=3, retry_delay=5):
 
+    def get_html_content(self, url, max_retries=3, retry_delay=5):
         for attempt in range(max_retries):
             try:
                 payload = {
@@ -22,22 +22,16 @@ class HorseOddsScraper:
                 }
 
                 response = requests.get("https://scraping.narf.ai/api/v1/", params=payload)
-                #print response code
-                print(response.status_code)
+                print(f"Response code: {response.status_code}")
+                
+                if response.status_code == 502:
+                    print(f"Received 502 error. Retrying in {retry_delay} seconds...")
+                    time.sleep(retry_delay)
+                    continue
+                
+                response.raise_for_status()  # Raise an exception for other HTTP errors
                 return response.content
                 
-                # api_response = requests.post(
-                #     "https://api.zyte.com/v1/extract",
-                #     auth=("340150045b364ca5abcd6a44403b1835", ""),
-                #     json={
-                #         "url": url,
-                #         "browserHtml": True,
-
-                #     },
-                #     timeout=20  # Add a timeout to prevent indefinite hanging
-                # )
-                # browser_html: str = api_response.json()["browserHtml"]
-                # return browser_html
             except requests.exceptions.RequestException as e:
                 print(f"Attempt {attempt + 1} failed: {str(e)}")
                 if attempt < max_retries - 1:
