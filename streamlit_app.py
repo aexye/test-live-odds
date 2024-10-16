@@ -104,7 +104,9 @@ if st.button("Submit"):
     previous_df = None
     
     while True:
-        odds_df = scraper.extract_horse_odds(selected_race['link'])
+        # while odds_df is None, keep trying
+        while odds_df is None:
+            odds_df = scraper.extract_horse_odds(selected_race['link'])
         current_df = create_odds_dataframe(odds_df)
         
         styled_df = style_dataframe(current_df, previous_df)
@@ -114,4 +116,4 @@ if st.button("Submit"):
             st.dataframe(styled_df)
         
         previous_df = current_df.copy()
-        time.sleep(10)  # Wait for 10 seconds before the next update
+        time.sleep(11)  # Wait for 10 seconds before the next update
