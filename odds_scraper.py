@@ -23,9 +23,9 @@ class HorseOddsScraper:
 
                 response = requests.get("https://scraping.narf.ai/api/v1/", params=payload)
                 print(f"Response code: {response.status_code}")
-                
-                if response.status_code == 502:
-                    print(f"Received 502 error. Retrying in {retry_delay} seconds...")
+                #if any of 50* response code, retry
+                if response.status_code // 100 == 5:
+                    print(f"Received {response.status_code} error. Retrying in {retry_delay} seconds...")
                     time.sleep(retry_delay)
                     continue
                 
