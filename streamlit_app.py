@@ -136,4 +136,4 @@ if st.button("Submit"):
             
             previous_df = current_df.copy()
         
-        time.sleep(10)  # Wait for 10 seconds before the next update
+        time.sleep(8)  # Wait for 10 seconds before the next update
